@@ -12,20 +12,16 @@ Behavior* Selector::Create()
 
 void Selector::Init()
 {
-	cur_child_index = 0;
+
 };
 
 EStatus Selector::Update(float DeltaTime)
 {
-	while (true && cur_child_index < childs.Num())
-	{
-		EStatus s = childs[cur_child_index]->Tick(DeltaTime);
+	for (int i = 0, len = childs.Num(); i < len; i++) {
+		EStatus s = childs[i]->Tick(DeltaTime);
 		if (s != EStatus::Failure) {
 			return s;
 		}
-		if (++cur_child_index >= childs.Num()) {
-			return EStatus::Failure;
-		}
 	}
-	return EStatus::Invalid;
+	return EStatus::Failure;
 }

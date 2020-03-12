@@ -3,7 +3,7 @@
 #include "Behavior.h"
 
 /*
-动作节点基类
+装饰器：
 */
 
 class Decorator : public Behavior

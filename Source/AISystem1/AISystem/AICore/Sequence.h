@@ -18,6 +18,4 @@ protected:
 	virtual void Init();
 	virtual EStatus Update(float DeltaTime) override;
 
-protected:
-	int32 cur_child_index;
 };

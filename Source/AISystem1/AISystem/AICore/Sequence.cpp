@@ -12,20 +12,16 @@ Behavior* Sequence::Create()
 
 void Sequence::Init()
 {
-	cur_child_index = 0;
+
 };
 
 EStatus Sequence::Update(float DeltaTime)
 {
-	while (true && cur_child_index < childs.Num())
-	{
-		EStatus s = childs[cur_child_index]->Tick(DeltaTime);
+	for (int i = 0, len = childs.Num(); i < len; i++) {
+		EStatus s = childs[i]->Tick(DeltaTime);
 		if (s != EStatus::Success) {
 			return s;
 		}
-		if (++cur_child_index >= childs.Num()) {
-			return EStatus::Success;
-		}
 	}
-	return EStatus::Invalid;
+	return EStatus::Success;
 }
