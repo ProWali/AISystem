@@ -4,86 +4,64 @@
 #include "GameFramework/Actor.h"
 #include <unordered_map>
 
-class BlackBoardKeyType
-{
-protected:
-	template<typename T>
-	static T GetValueFromMemory(const uint8* MemoryBlock)
-	{
-		return *((T*)MemoryBlock);
-	}
-
-	template<typename T>
-	static void SetValueInMemory(uint8* MemoryBlock, const T& Value)
-	{
-		*((T*)MemoryBlock) = Value;
-	}
-};
-
-template <typename T>
-class BlackBoardTypeData
-{
-public:
-	void SetValue(T _value)
-	{
-		value = _value;
-	}
-	T GetValue()
-	{
-		return value;
-	}
-
-private:
-	T value;
-};
+class BlackBoardKeyType {};
 
 class BlackBoardData_Bool: public BlackBoardKeyType
 {
 public:
-	static void SetValue(BlackBoardData_Bool* KeyOb, uint8* RawData, bool Value)
+	void SetValue(bool _value)
 	{
-		SetValueInMemory<bool>(RawData, Value);
+		Value = _value;
 	}
-	static bool GetValue(const BlackBoardData_Bool* KeyOb, const uint8* RawData)
+	bool GetValue()
 	{
-		return GetValueFromMemory<bool>(RawData);
+		return Value;
 	}
+private:
+	bool Value;
 };
 class BlackBoardData_Int : public BlackBoardKeyType
 {
 public:
-	static void SetValue(BlackBoardData_Int* KeyOb, uint8* RawData, int Value)
+	void SetValue(int _value)
 	{
-		SetValueInMemory<int>(RawData, Value);
+		Value = _value;
 	}
-	static int GetValue(const BlackBoardData_Int* KeyOb, const uint8* RawData)
+	int GetValue()
 	{
-		return GetValueFromMemory<int>(RawData);
+		return Value;
 	}
+private:
+	int Value;
 };
 class BlackBoardData_Float : public BlackBoardKeyType
 {
 public:
-	static void SetValue(BlackBoardData_Float* KeyOb, uint8* RawData, float Value)
+	void SetValue(float _value)
 	{
-		SetValueInMemory<float>(RawData, Value);
+		Value = _value;
 	}
-	static int GetValue(const BlackBoardData_Float* KeyOb, const uint8* RawData)
+	float GetValue()
 	{
-		return GetValueFromMemory<float>(RawData);
+		return Value;
 	}
+private:
+	float Value;
 };
 class BlackBoardData_FVector : public BlackBoardKeyType
 {
 public:
-	static void SetValue(BlackBoardData_FVector* KeyOb, uint8* RawData, FVector Value)
+public:
+	void SetValue(FVector _value)
 	{
-		SetValueInMemory<FVector>(RawData, Value);
+		Value = _value;
 	}
-	static FVector GetValue(const BlackBoardData_FVector* KeyOb, const uint8* RawData)
+	FVector GetValue()
 	{
-		return GetValueFromMemory<FVector>(RawData);
+		return Value;
 	}
+private:
+	FVector Value;
 };
 class BlackBoardData_FString : public BlackBoardKeyType
 {
@@ -120,33 +98,53 @@ private:
 class BlackBoardData
 {
 public:
-	bool GetValueAsBool(const FString& key)
+	static bool GetValueAsBool(const FString& key)
 	{
-
+		return GetValue<BlackBoardData_Bool>(key)->GetValue();;
 	}
-	int GetValueAsInt(const FString& key)
+	static int GetValueAsInt(const FString& key)
 	{
-
+		return GetValue<BlackBoardData_Int>(key)->GetValue();;
 	}
-	float GetValueAsFloat(const FString& key)
+	static float GetValueAsFloat(const FString& key)
 	{
-
+		return GetValue<BlackBoardData_Float>(key)->GetValue();;
 	}
-	FVector GetValueAsFVector(const FString& key)
+	static FVector GetValueAsFVector(const FString& key)
 	{
-
+		return GetValue<BlackBoardData_FVector>(key)->GetValue();;
 	}
-	FString GetValueAsFString(const FString& key)
-	{
 
+	static void SetValueAsBool(const FString& key, bool value)
+	{
+		SetValue<BlackBoardData_Bool>(key, new BlackBoardData_Bool())->SetValue(value);
 	}
-	AActor* GetValueAsActor(const FString& key)
+	static void SetValueAsBool(const FString& key, int value)
 	{
+		SetValue<BlackBoardData_Int>(key, new BlackBoardData_Int())->SetValue(value);
+	}
+	static void SetValueAsBool(const FString& key, float value)
+	{
+		SetValue<BlackBoardData_Float>(key, new BlackBoardData_Float())->SetValue(value);
+	}
+	static void SetValueAsBool(const FString& key, FVector value)
+	{
+		SetValue<BlackBoardData_FVector>(key, new BlackBoardData_FVector())->SetValue(value);
+	}
 
+protected:
+	template<typename TDataClass>
+	static TDataClass* SetValue(const FString& key, TDataClass* value)
+	{
+		black_data_map[key] = value;
+		return value;
+	}
+	template<typename TDataClass>
+	static TDataClass* GetValue(const FString& key)
+	{
+		return (TDataClass*)(black_data_map[key]);
 	}
 
 private:
-
-	//std::unordered_map<int, >
-
+	static std::unordered_map<FString, BlackBoardKeyType*> black_data_map;
 };

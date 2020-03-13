@@ -2,7 +2,7 @@
 
 #include "../AICore/Action.h"
 
-class ActionWalk: public Action
+class Action_Walk: public Action
 {
 public:
 	static Behavior* Create();
@@ -10,8 +10,8 @@ public:
 	virtual FString Name() override;
 
 protected:
-	ActionWalk() {};
-	virtual ~ActionWalk() {};
+	Action_Walk() {};
+	virtual ~Action_Walk() {};
 
 	virtual void Init() override;
 

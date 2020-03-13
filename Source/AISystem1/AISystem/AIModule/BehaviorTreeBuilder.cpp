@@ -1,5 +1,5 @@
 #include "BehaviorTreeBuilder.h"
-#include "ActionWalk.h"
+#include "Action_Walk.h"
 #include "../AICore/Sequence.h"
 #include "../AICore/Action.h"
 #include "../AICore/Condition.h"
@@ -20,7 +20,7 @@ BehaviorTreeBuilder* BehaviorTreeBuilder::Action(EActionType type)
 	switch (type)
 	{
 	case EActionType::Walk:
-		Ac = ActionWalk::Create();
+		Ac = Action_Walk::Create();
 		break;
 	default:
 		Ac = nullptr;

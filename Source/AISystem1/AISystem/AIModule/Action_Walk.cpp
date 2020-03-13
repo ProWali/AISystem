@@ -1,16 +1,16 @@
-#include "ActionWalk.h"
+#include "Action_Walk.h"
 
-Behavior* ActionWalk::Create()
+Behavior* Action_Walk::Create()
 {
-	return new ActionWalk();
+	return new Action_Walk();
 }
 
-FString ActionWalk::Name()
+FString Action_Walk::Name()
 {
-	return TEXT("ActionWalk");
+	return TEXT("Action_Walk");
 }
 
-EStatus ActionWalk::Update(float DeltaTime)
+EStatus Action_Walk::Update(float DeltaTime)
 {
 	test_walk_timer += DeltaTime;
 	if (test_walk_timer > 2) {
@@ -24,7 +24,7 @@ EStatus ActionWalk::Update(float DeltaTime)
 	return EStatus::Running;
 }
 
-void ActionWalk::Init()
+void Action_Walk::Init()
 {
 	test_walk_timer = 0;
 	walk_flag = false;
